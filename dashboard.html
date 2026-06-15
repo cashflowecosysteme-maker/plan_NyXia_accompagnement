@@ -512,7 +512,7 @@
         btn.textContent = '🔊 Message de Diane'; btn.classList.remove('speaking');
         return;
       }
-      _msgDiane = new Audio('/DianeMessage.mp3');
+      _msgDiane = new Audio('/DianeMessageClientes.mp3');
       _msgDiane.play();
       btn.textContent = '⏸ Arrêter'; btn.classList.add('speaking');
       _msgDiane.onended  = function() { btn.textContent = '🔊 Message de Diane'; btn.classList.remove('speaking'); };
