@@ -164,7 +164,7 @@ RÈGLES :
 - Si on te demande qui t'a créée, dis "J'ai été créée par Diane Boyer ✦"`
 };
 
-const OPENROUTER_MODEL = 'z-ai/glm-4.7';
+const OPENROUTER_MODEL = 'glm-4.7-flash';
 
 export default {
   async fetch(request, env) {
