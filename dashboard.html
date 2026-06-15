@@ -2,13 +2,15 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="/FavIcon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NyXia IA — Mon Espace</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="icon" type="image/png" href="/FavIcon.png">
+  <link rel="icon" type="image/png" href="/FavIcon.png">
+
   <style>
     :root {
       --bg1: #0A1628; --bg2: #0F1C3F; --bg3: #1A2554; --sidebar: #080f22;
@@ -123,7 +125,7 @@
 <body>
 
   <canvas id="starry-canvas"></canvas>
-  <audio id="nyxia-audio" src="/AccueilNyXiaClientes.mp3" preload="auto"></audio>
+  <audio id="nyxia-audio" src="/NyXiaVoix-RobotParfait1.mp3" preload="auto"></audio>
 
   <header>
     <div class="header-brand">
@@ -137,7 +139,7 @@
       <div class="welcome-text">Bienvenue dans mon univers ✦ <strong id="header-username"></strong></div>
     </div>
     <div class="header-actions">
-      <span class="btn-header btn-pro">⭐ Accompagnment</span>
+      <span class="btn-header btn-pro">⭐ Miroir des Aidantes</span>
       <button class="btn-header btn-logout" onclick="logout()">Déconnexion</button>
     </div>
   </header>
@@ -178,7 +180,7 @@
           <div class="user-avatar" id="sidebar-avatar">D</div>
           <div class="user-info">
             <div class="user-name" id="sidebar-username">Chargement...</div>
-            <div class="user-plan">✦ Plan Accompagnement </div>
+            <div class="user-plan">✦ Plan Miroir des Aidantes</div>
           </div>
         </div>
       </div>
@@ -193,7 +195,7 @@
               <div class="chat-header-name">NyXia IA</div>
               <div class="chat-header-sub">Ton amie dans le miroir · Retrouver une amie dans le Miroir™</div>
             </div>
-            <button class="btn-speak" id="btn-speak" onclick="toggleSpeak()">🔊 Écouter NyXia</button>
+            <button class="btn-speak" id="btn-speak" onclick="jouerMessageDiane()">🔊 Message de Diane</button>
           </div>
           <div class="chat-messages" id="chat-messages"></div>
           <div class="suggestions" id="suggestions">
@@ -278,14 +280,14 @@
     var sessionToken = sessionStorage.getItem('nyxia_token') || ''
     var clientEmail  = '', clientName = ''
     ;(function checkAuth() {
-      if (!sessionToken) { window.location.href = '/login.html'; return }
+      if (!sessionToken) { window.location.href = '/'; return }
       fetch('/api/check-auth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: sessionToken }) })
       .then(r => r.json()).then(data => {
-        if (!data.valid) { window.location.href = '/login.html'; return }
+        if (!data.valid) { window.location.href = '/'; return }
         clientEmail = data.email || ''
         clientName = localStorage.getItem('nyxia_username') || ''
         initUI()
-      }).catch(() => { window.location.href = '/login.html' })
+      }).catch(() => { window.location.href = '/' })
     })()
 
     function initUI() {
@@ -299,7 +301,7 @@
 
     function logout() {
       fetch('/api/logout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: sessionToken }) })
-      .finally(() => { sessionStorage.removeItem('nyxia_token'); localStorage.removeItem('nyxia_username'); window.location.href = '/login.html' })
+      .finally(() => { sessionStorage.removeItem('nyxia_token'); localStorage.removeItem('nyxia_username'); window.location.href = '/' })
     }
 
     /* ═══════ NAVIGATION ═══════ */
@@ -501,10 +503,20 @@
       setTimeout(doSpeak, 200)
     }
 
-    function toggleSpeak() {
-      isSpeaking = !isSpeaking; var btn = document.getElementById('btn-speak')
-      if (isSpeaking) { btn.textContent = '🔊 NyXia parle...'; btn.classList.add('speaking') } 
-      else { btn.textContent = '🔊 Écouter NyXia'; btn.classList.remove('speaking'); window.speechSynthesis.cancel() }
+    var _msgDiane = null;
+    function jouerMessageDiane() {
+      var btn = document.getElementById('btn-speak');
+      // Si la MP3 joue déjà → on l'arrête
+      if (_msgDiane && !_msgDiane.paused) {
+        _msgDiane.pause(); _msgDiane.currentTime = 0;
+        btn.textContent = '🔊 Message de Diane'; btn.classList.remove('speaking');
+        return;
+      }
+      _msgDiane = new Audio('/DianeMessage.mp3');
+      _msgDiane.play();
+      btn.textContent = '⏸ Arrêter'; btn.classList.add('speaking');
+      _msgDiane.onended  = function() { btn.textContent = '🔊 Message de Diane'; btn.classList.remove('speaking'); };
+      _msgDiane.onerror  = function() { btn.textContent = '🔊 Message de Diane'; btn.classList.remove('speaking'); };
     }
 
     function speakText(text) {
