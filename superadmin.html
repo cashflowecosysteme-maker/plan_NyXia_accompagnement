@@ -288,11 +288,11 @@ tr:hover td{background:rgba(123,92,255,0.05)}
           <div class="products-checkboxes">
             <label class="checkbox-label">
               <input type="checkbox" id="new-pro-pro" value="pro">
-              <span>🪞 Miroir Pro — NyXia premium</span>
+              <span>🪞 NyXia — Plan Accompagnement</span>
             </label>
             <label class="checkbox-label">
               <input type="checkbox" id="new-pro-flipbook" value="flipbook">
-              <span>📚 Miroir des Aidantes — Formation</span>
+              <span>📚 Retrouver une amie dans le Miroir</span>
             </label>
           </div>
         </div>
@@ -366,8 +366,8 @@ tr:hover td{background:rgba(123,92,255,0.05)}
         <div class="field">
           <label>Produits</label>
           <div class="products-checkboxes">
-            <label class="checkbox-label"><input type="checkbox" id="edit-pro-pro" value="pro"><span>🪞 Miroir Pro</span></label>
-            <label class="checkbox-label"><input type="checkbox" id="edit-pro-flipbook" value="flipbook"><span>📚 Miroir des Aidantes</span></label>
+            <label class="checkbox-label"><input type="checkbox" id="edit-pro-pro" value="pro"><span>🪞 Plan Accompagnement</span></label>
+            <label class="checkbox-label"><input type="checkbox" id="edit-pro-flipbook" value="flipbook"><span>📚 Retrouver une amie dans le Miroir</span></label>
           </div>
         </div>
         <div class="field">
@@ -717,8 +717,8 @@ function renderAccounts() {
   tbody.innerHTML = clientAccounts.map(function(acc) {
     var products = acc.products || [];
     var productBadges = products.map(function(p) {
-      if (p === 'pro') return '<span class="badge pro">🪞 Miroir Pro</span>';
-      if (p === 'flipbook') return '<span class="badge flipbook">📚 Miroir des Aidantes</span>';
+      if (p === 'pro') return '<span class="badge pro">🪞 Plan Accompagnement</span>';
+      if (p === 'flipbook') return '<span class="badge flipbook">📚 Retrouver une amie</span>';
       return '<span class="badge">' + p + '</span>';
     }).join(' ');
 
